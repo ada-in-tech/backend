@@ -6,6 +6,12 @@ const reportSchema = new mongoose.Schema({
     dateReported: { type: Date, default: Date.now },
     resolved: { type: Boolean, default: false },
     resolutionDetails: String,
+    adminReview: {
+        reviewedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        reviewedAt: Date,
+        actionTaken: String,
+        notes: String
+    }
     // Additional fields as needed
 });
 

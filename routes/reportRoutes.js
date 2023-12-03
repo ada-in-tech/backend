@@ -5,6 +5,7 @@ const { validate } = require('../middleware/validate');
 const router = express.Router();
 
 router.post('/', reportValidationRules(), validate, reportController.createReport);
+router.post('/:id/review', reportController.adminReviewReport);
 router.get('/', reportController.getAllReports);
 router.get('/:id', reportController.getReportById);
 router.put('/:id', reportValidationRules(), validate, reportController.updateReport);

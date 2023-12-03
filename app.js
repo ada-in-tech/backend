@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const errorHandler = require('./middleware/errorHandler');
 const mongoose = require('mongoose');
@@ -17,7 +18,7 @@ const professionalRoutes = require('./routes/professionalRoutes');
 const app = express();
 const port = process.env.PORT || 3001;
 
-require('dotenv').config();
+
 
 mongoose.connect(process.env.DB_URI, {
     useNewUrlParser: true,

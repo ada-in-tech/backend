@@ -5,6 +5,7 @@ const Newcomer = require('../models/Newcomer');
 const Professional = require('../models/Professional');
 const CommunityGroup = require('../models/CommunityGroup');
 const Company = require('../models/Company');
+const transporter = require('../emailService');
 
 exports.register = async (req, res) => {
     try {
@@ -54,6 +55,22 @@ exports.register = async (req, res) => {
 
         // Create token
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        const mailOptions = {
+            from: '"ADA IN TECH" adaobiamudo@gmail.com',
+            to: user.email, // User's email address
+            subject: 'Welcome to Ada in Tech',
+            text: `Welcome, ${user.name}! Thank you for registering at Ada in Tech. This is a confirmation that your account has been created.`,
+            html: `<p>Welcome, <strong>${user.name}</strong>! Thank you for registering at Ada in Tech. This is a confirmation that your account has been created.</p>`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending welcome email:', error);
+            } else {
+                console.log('Welcome email sent:', info.messageId);
+            }
+        });
 
         res.status(201).json({ token, userRole: user.role });
     } catch (err) {
