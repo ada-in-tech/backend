@@ -11,7 +11,7 @@ exports.createCommunityGroup = async (req, res) => {
 
 exports.getAllCommunityGroups = async (req, res) => {
     try {
-        const communityGroups = await CommunityGroup.find();
+        const communityGroups = await CommunityGroup.find().populate('user', 'name email bio profilePicture skills interests linkedIn github');
         res.status(200).json(communityGroups);
     } catch (err) {
         res.status(500).json({ message: err.message });

@@ -11,7 +11,7 @@ exports.createNewcomer = async (req, res) => {
 
 exports.getAllNewcomers = async (req, res) => {
     try {
-        const newcomers = await Newcomer.find();
+        const newcomers = await Newcomer.find().populate('user', 'name email bio profilePicture skills interests linkedIn github');
         res.status(200).json(newcomers);
     } catch (err) {
         res.status(500).json({ message: err.message });
