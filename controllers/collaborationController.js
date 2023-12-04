@@ -2,7 +2,17 @@ const Collaboration = require('../models/Collaboration');
 
 exports.createCollaboration = async (req, res) => {
     try {
-        const newCollaboration = await Collaboration.create(req.body);
+        const { sender, receiver } = req.body;
+
+        // Check if a collaboration already exists with the same sender and receiver
+        const existingCollaboration = await Collaboration.findOne({ sender, receiver });
+        if (existingCollaboration) {
+            // Collaboration already exists, so don't create a new one
+            return res.status(200).json({ message: 'Collaboration already exists', collaboration: existingCollaboration });
+        }
+
+        // If the collaboration doesn't exist, create a new one
+        const newCollaboration = await Collaboration.create({ sender, receiver });
         res.status(201).json(newCollaboration);
     } catch (err) {
         res.status(400).json({ message: err.message });
@@ -11,7 +21,23 @@ exports.createCollaboration = async (req, res) => {
 
 exports.getAllCollaborations = async (req, res) => {
     try {
-        const collaborations = await Collaboration.find();
+        const collaborations = await Collaboration.find()
+            .populate('sender', 'profilePicture name email bio skills interests linkedIn github role')
+            .populate('receiver', 'profilePicture name email bio skills interests linkedIn github role');
+        res.status(200).json(collaborations);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+exports.getUserCollaborations = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const collaborations = await Collaboration.find({
+            $or: [{ sender: userId }, { receiver: userId }]
+        })
+            .populate('sender', 'profilePicture name email bio skills interests linkedIn github role')
+            .populate('receiver', 'profilePicture name email bio skills interests linkedIn github role');
         res.status(200).json(collaborations);
     } catch (err) {
         res.status(500).json({ message: err.message });
