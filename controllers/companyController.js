@@ -11,7 +11,7 @@ exports.createCompany = async (req, res) => {
 
 exports.getAllCompanies = async (req, res) => {
     try {
-        const companies = await Company.find().populate('user', 'name email bio profilePicture skills interests linkedIn github');
+        const companies = await Company.find().populate('user', 'name email bio profilePicture skills interests linkedIn github role');
         res.status(200).json(companies);
     } catch (err) {
         res.status(500).json({ message: err.message });

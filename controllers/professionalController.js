@@ -11,7 +11,7 @@ exports.createProfessional = async (req, res) => {
 
 exports.getAllProfessionals = async (req, res) => {
     try {
-        const professionals = await Professional.find().populate('user', 'name email bio profilePicture skills interests linkedIn github');
+        const professionals = await Professional.find().populate('user', 'name email bio profilePicture skills interests linkedIn github role');
         res.status(200).json(professionals);
     } catch (err) {
         res.status(500).json({ message: err.message });

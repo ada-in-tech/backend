@@ -14,6 +14,7 @@ const feedbackRoutes = require('./routes/feedbackRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const newcomerRoutes = require('./routes/newcomerRoutes');
 const professionalRoutes = require('./routes/professionalRoutes');
+const collaborationRoutes = require('./routes/collaborationRoutes');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -44,6 +45,7 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/newcomers', newcomerRoutes);
 app.use('/api/professionals', professionalRoutes);
+app.use('/api/collaborations', collaborationRoutes);
 
 app.use(errorHandler);
 

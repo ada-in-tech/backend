@@ -6,6 +6,7 @@ const Professional = require('../models/Professional');
 const CommunityGroup = require('../models/CommunityGroup');
 const Company = require('../models/Company');
 const transporter = require('../emailService');
+const Collaboration = require('../models/Collaboration');
 
 exports.register = async (req, res) => {
     try {
@@ -95,7 +96,11 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({
+            userId: user._id,
+            name: user.name,
+            role: user.role
+        }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         const userData = {
             id: user._id,
@@ -122,7 +127,7 @@ exports.createUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.find().select('profilePicture name email bio skills interests linkedIn github role');
         res.status(200).json(users);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -156,5 +161,35 @@ exports.deleteUser = async (req, res) => {
         res.status(200).json({ message: 'User deleted' });
     } catch (err) {
         res.status(500).json({ message: err.message });
+    }
+};
+
+// Method to send message and record collaboration
+exports.sendMessage = async (req, res) => {
+    const { recipientId, message, senderId, subject } = req.body;
+
+    try {
+        // Fetch recipient's email
+        const recipient = await User.findById(recipientId);
+        if (!recipient) {
+            return res.status(404).json({ message: 'Recipient not found' });
+        }
+
+        // Send email
+        const mailOptions = {
+            from: '"ADA IN TECH" <adaobiamudo@gmail.com>',
+            to: recipient.email,
+            subject: subject,
+            text: message
+        };
+        await transporter.sendMail(mailOptions);
+
+        // Record collaboration
+        await Collaboration.create({ sender: senderId, receiver: recipientId });
+
+        res.status(200).json({ message: 'Message sent successfully' });
+    } catch (error) {
+        console.error('Error sending message:', error);
+        res.status(500).json({ message: 'Failed to send message' });
     }
 };

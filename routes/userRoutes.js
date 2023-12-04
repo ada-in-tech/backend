@@ -13,6 +13,8 @@ router.post('/register', userController.register);
 // Login route
 router.post('/login', userController.login);
 
+router.post('/send-message', userController.sendMessage);
+
 // Only admins can view all users or delete a user
 router.get('/', requireAuth, checkRole('admin'), userController.getAllUsers);
 router.delete('/:id', requireAuth, checkRole('admin'), userController.deleteUser);
