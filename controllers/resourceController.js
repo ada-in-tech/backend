@@ -11,7 +11,7 @@ exports.createResource = async (req, res) => {
 
 exports.getAllResources = async (req, res) => {
     try {
-        const resources = await Resource.find();
+        const resources = await Resource.find().populate('sharer', 'name email');
         res.status(200).json(resources);
     } catch (err) {
         res.status(500).json({ message: err.message });
