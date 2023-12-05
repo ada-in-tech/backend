@@ -38,7 +38,7 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/workshops', workshopRoutes);
-app.use('/joblistings', jobListingRoutes);
+app.use('/api/joblistings', jobListingRoutes);
 app.use('/api/companies', companyRoutes);
 app.use('/api/communitygroups', communityGroupRoutes);
 app.use('/api/resources', resourceRoutes);

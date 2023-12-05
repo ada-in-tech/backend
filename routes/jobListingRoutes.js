@@ -6,7 +6,6 @@ const { validate } = require('../middleware/validate');
 const router = express.Router();
 
 router.post('/', jobListingValidationRules(), validate, jobListingController.createJobListing);
-router.post('/', requireAuth, checkRole('company'), jobListingController.createJobListing);
 router.get('/', requireAuth, jobListingController.getAllJobListings);
 router.get('/:id', requireAuth, jobListingController.getJobListingById);
 router.put('/:id', requireAuth, checkRole('company'), jobListingController.updateJobListing);

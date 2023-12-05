@@ -11,7 +11,7 @@ exports.createJobListing = async (req, res) => {
 
 exports.getAllJobListings = async (req, res) => {
     try {
-        const jobListings = await JobListing.find();
+        const jobListings = await JobListing.find().populate('company', 'name email profilePicture');
         res.status(200).json(jobListings);
     } catch (err) {
         res.status(500).json({ message: err.message });
