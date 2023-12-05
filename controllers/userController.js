@@ -45,7 +45,8 @@ exports.register = async (req, res) => {
                 // For companies
                 await Company.create({ user: user._id, /* additional company data */ });
                 break;
-                // case 'admin':
+            case 'admin':
+                user.role = 'admin';
                 // Handle admin creation if needed
                 // await Admin.create({ user: user._id, /* additional admin data */ });
                 break;
