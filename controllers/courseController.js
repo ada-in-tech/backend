@@ -2,6 +2,11 @@ const Course = require('../models/Course');
 
 exports.createCourse = async (req, res) => {
     try {
+        const existingCourse = await Course.findOne({ title: req.body.title });
+        if (existingCourse) {
+            return res.status(400).json({ message: 'A course with this title already exists.' });
+        }
+
         const newCourse = await Course.create(req.body);
         res.status(201).json(newCourse);
     } catch (err) {
@@ -11,12 +16,13 @@ exports.createCourse = async (req, res) => {
 
 exports.getAllCourses = async (req, res) => {
     try {
-        const courses = await Course.find();
+        const courses = await Course.find().populate('instructor', 'name email');
         res.status(200).json(courses);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
+
 
 exports.getCourseById = async (req, res) => {
     try {
