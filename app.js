@@ -15,6 +15,7 @@ const reportRoutes = require('./routes/reportRoutes');
 const newcomerRoutes = require('./routes/newcomerRoutes');
 const professionalRoutes = require('./routes/professionalRoutes');
 const collaborationRoutes = require('./routes/collaborationRoutes');
+const campaignRoutes = require('./routes/campaignRoutes');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -46,6 +47,7 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/newcomers', newcomerRoutes);
 app.use('/api/professionals', professionalRoutes);
 app.use('/api/collaborations', collaborationRoutes);
+app.use('/api/campaigns', campaignRoutes);
 
 app.use(errorHandler);
 

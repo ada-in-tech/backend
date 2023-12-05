@@ -11,7 +11,7 @@ exports.createCampaign = async (req, res) => {
 
 exports.getAllCampaigns = async (req, res) => {
     try {
-        const campaigns = await Campaign.find();
+        const campaigns = await Campaign.find().populate('createdBy', 'name email');
         res.status(200).json(campaigns);
     } catch (err) {
         res.status(500).json({ message: err.message });
