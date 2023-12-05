@@ -2,6 +2,11 @@ const Workshop = require('../models/Workshop');
 
 exports.createWorkshop = async (req, res) => {
     try {
+        const existingWorkshop = await Workshop.findOne({ title: req.body.title });
+        if (existingWorkshop) {
+            return res.status(400).json({ message: 'A Workshop with this title already exists.' });
+        }
+
         const newWorkshop = await Workshop.create(req.body);
         res.status(201).json(newWorkshop);
     } catch (err) {
@@ -11,12 +16,13 @@ exports.createWorkshop = async (req, res) => {
 
 exports.getAllWorkshops = async (req, res) => {
     try {
-        const workshops = await Workshop.find();
+        const workshops = await Workshop.find().populate('instructor', 'name email');
         res.status(200).json(workshops);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
+
 
 exports.getWorkshopById = async (req, res) => {
     try {
