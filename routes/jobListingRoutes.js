@@ -9,6 +9,6 @@ router.post('/', jobListingValidationRules(), validate, jobListingController.cre
 router.get('/', requireAuth, jobListingController.getAllJobListings);
 router.get('/:id', requireAuth, jobListingController.getJobListingById);
 router.put('/:id', requireAuth, checkRole('company'), jobListingController.updateJobListing);
-router.delete('/:id', requireAuth, checkRole('company'), jobListingController.deleteJobListing);
+router.delete('/:id', requireAuth, jobListingController.deleteJobListing);
 
 module.exports = router;
